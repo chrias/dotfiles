@@ -148,7 +148,15 @@ fi
 # CUSTOM PS1
 
 # GIT STUFF, use_color is defined ABOVE
-source /usr/share/git/completion/git-prompt.sh
+FEDORA_GIT_PROMPT=/usr/share/git-core/contrib/completion/git-prompt.sh
+ARCH_GIT_PROMPT=/usr/share/git/completion/git-prompt.sh
+
+if [ -f $ARCH_GIT_PROMPT ]; then
+    source $ARCH_GIT_PROMPT
+elif [ -f $FEDORA_GIT_PROMPT ]; then
+    source $FEDORA_GIT_PROMPT
+fi
+
 GIT_PS1_SHOWDIRTYSTATE=1
 GIT_PS1_SHOWSTASHSTATE=1
 GIT_PS1_SHOWUNTRACKEDFILES=1
@@ -172,10 +180,13 @@ else
 	fi
 fi
 
-# RUST
-source "$HOME/.cargo/env"
-# aggiungo cargo al path per i pacchetti installati tramite cargo install
-export PATH=$HOME/.cargo/bin:$PATH
+# cARGO
+CARGO_ENV_PATH=$HOME/.cargo/env
+if [ -f $CARGO_ENV_PATH ]; then
+    source $CARGO_ENV_PATH
+    # aggiungo cargo al path per i pacchetti installati tramite cargo install
+    export PATH=$HOME/.cargo/bin:$PATH
+fi
 
 # JAVA
 export JAVA_HOME=/usr/lib/jvm/default
@@ -194,7 +205,12 @@ export PATH=$PATH:/opt/flutter/bin
 
 # VIM ALIAS
 alias vim="nvim"
-source /usr/share/nvm/init-nvm.sh
+
+# NODE NVM
+NVM_PATH=/usr/share/nvm/init-nvm.sh
+if [ -f $NVM_PATH ]; then
+    source $NVM_PATH
+fi
 
 # Added by Toolbox App
 export PATH="$PATH:/home/chris/.local/share/JetBrains/Toolbox/scripts"
